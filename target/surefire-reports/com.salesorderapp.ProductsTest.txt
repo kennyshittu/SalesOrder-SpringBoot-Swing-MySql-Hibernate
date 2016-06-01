@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.salesorderapp.ProductsTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.236 sec - in com.salesorderapp.ProductsTest

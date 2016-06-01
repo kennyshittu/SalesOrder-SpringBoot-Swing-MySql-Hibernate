@@ -3,6 +3,7 @@ package com.salesorderapp.backend.daos;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -36,17 +37,24 @@ public class SalesOrderDao extends BaseDao<SalesOrder>{
   public SalesOrderEntity getById(final long salesCode) {
 
     SalesOrder salesOrder = entityManager.find(SalesOrder.class, salesCode);
-    Customer customer = mCustomerDao.getById(Long.parseLong(salesOrder.getCustomer().substring(
-        1,
-        salesOrder.getCustomer().indexOf(")")
-    )));
-
     List<OrderLine> orderLines = mOrderLineDao.getBySalesCode(salesCode);
     List<Map<String, Object>> products = new ArrayList<>();
     Map<String, Object> customerObject = Maps.newHashMap();
 
-    customerObject.put("id", customer.getCode());
-    customerObject.put("name", customer.getName());
+    if(salesOrder != null && salesOrder.getCustomer() != null) {
+      Customer customer = mCustomerDao.getById(Long.parseLong(salesOrder.getCustomer().substring(
+          1,
+          salesOrder.getCustomer().indexOf(")")
+      )));
+
+      if(customer != null) {
+        customerObject.put("id", customer.getCode());
+        customerObject.put("name", customer.getName());
+      }
+    } else {
+      // this order has been deleted
+      return null;
+    }
 
     for(OrderLine orderLine : orderLines){
       Map<String, Object> product = Maps.newHashMap();

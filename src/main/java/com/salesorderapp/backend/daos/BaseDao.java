@@ -41,6 +41,10 @@ public abstract class BaseDao<T> {
     return entityManager.createQuery(String.format("from %s", entity)).getResultList();
   }
 
+  public void truncate(final String entity) {
+    entityManager.createQuery(String.format("delete from %s", entity)).executeUpdate();
+  }
+
   /**
    * Return the Object having the passed id.
    */
