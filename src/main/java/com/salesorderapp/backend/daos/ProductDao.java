@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.salesorderapp.backend.entities.Customer;
 import com.salesorderapp.backend.entities.Product;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,60 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public class ProductDao {
-  // ------------------------
-  // PUBLIC METHODS
-  // ------------------------
+public class ProductDao extends BaseDao<Product> {
 
-  /**
-   * Save the user in the database.
-   */
-  public void create(final Product product) {
-    entityManager.persist(product);
-    return;
+  private static final String ENTITY = "Product";
+  public List<Product> getAll(){
+    return super.getAll(ENTITY);
   }
 
-  /**
-   * Delete the user from the database.
-   */
-  public void delete(final Product product) {
-    if (entityManager.contains(product))
-      entityManager.remove(product);
-    else
-      entityManager.remove(entityManager.merge(product));
-    return;
+  public Product getById(final long code){
+    return super.getById(Product.class, code);
   }
-
-  /**
-   * Return all the users stored in the database.
-   */
-  @SuppressWarnings("unchecked")
-  public List<Product> getAll() {
-
-    return entityManager.createQuery(String.format("from Product")).getResultList();
-  }
-
-  /**
-   * Return the user having the passed id.
-   */
-  public Product getById(final long code) {
-    return entityManager.find(Product.class, code);
-  }
-
-  /**
-   * Update the passed user in the database.
-   */
-  public void update(final Product product) {
-    entityManager.merge(product);
-    return;
-  }
-
-  // ------------------------
-  // PRIVATE FIELDS
-  // ------------------------
-
-  // An EntityManager will be automatically injected from entityManagerFactory
-  // setup on DatabaseConfig class.
-  @PersistenceContext
-  private EntityManager entityManager;
 }

@@ -22,41 +22,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public class SalesOrderDao {
-  // ------------------------
-  // PUBLIC METHODS
-  // ------------------------
+public class SalesOrderDao extends BaseDao<SalesOrder>{
 
-  /**
-   * Save the user in the database.
-   */
-  public void create(final SalesOrder salesOrder) {
-    entityManager.persist(salesOrder);
-    return;
+  private static final String ENTITY = "SalesOrder";
+
+  public List<SalesOrder> getAll(){
+    return super.getAll(ENTITY);
   }
 
   /**
-   * Delete the user from the database.
-   */
-  public void delete(final SalesOrder salesOrder) {
-    if (entityManager.contains(salesOrder))
-      entityManager.remove(salesOrder);
-    else
-      entityManager.remove(entityManager.merge(salesOrder));
-    return;
-  }
-
-  /**
-   * Return all the users stored in the database.
-   */
-  @SuppressWarnings("unchecked")
-  public List<SalesOrder> getAll() {
-
-    return entityManager.createQuery(String.format("from SalesOrder")).getResultList();
-  }
-
-  /**
-   * Return the user having the passed id.
+   * Return the Object having the passed id.
    */
   public SalesOrderEntity getById(final long salesCode) {
 
@@ -84,18 +59,6 @@ public class SalesOrderDao {
 
     return new SalesOrderEntity(salesOrder.getCode(), customerObject, products, salesOrder.getTotalPrice());
   }
-
-  /**
-   * Update the passed user in the database.
-   */
-  public void update(final SalesOrder salesOrder) {
-    entityManager.merge(salesOrder);
-    return;
-  }
-
-  // ------------------------
-  // PRIVATE FIELDS
-  // ------------------------
 
   // An EntityManager will be automatically injected from entityManagerFactory
   // setup on DatabaseConfig class.

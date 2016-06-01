@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.salesorderapp.backend.entities.Customer;
 import com.salesorderapp.backend.entities.OrderLine;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,69 +15,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public class OrderLineDao {
-  // ------------------------
-  // PUBLIC METHODS
-  // ------------------------
+public class OrderLineDao extends BaseDao<OrderLine>{
 
-  /**
-   * Save the user in the database.
-   */
-  public void create(final OrderLine orderLine) {
-    entityManager.persist(orderLine);
-    return;
+  private static final String ENTITY = "OrderLine";
+  public List<OrderLine> getAll(){
+    return super.getAll(ENTITY);
   }
 
-  /**
-   * Delete the user from the database.
-   */
-  public void delete(final OrderLine orderLine) {
-    if (entityManager.contains(orderLine))
-      entityManager.remove(orderLine);
-    else
-      entityManager.remove(entityManager.merge(orderLine));
-    return;
+  public OrderLine getById(final long code){
+    return super.getById(OrderLine.class, code);
   }
 
-  /**
-   * Return all the users stored in the database.
-   */
-  @SuppressWarnings("unchecked")
-  public List<OrderLine> getAll() {
-
-    return entityManager.createQuery(String.format("from OrderLine")).getResultList();
+  public List<OrderLine> getBySalesCode(final long salesCode){
+    return super.getBySalesCode(ENTITY, salesCode);
   }
 
-  /**
-   * Return the user having the passed id.
-   */
-  public OrderLine getById(final long code) {
-    return entityManager.find(OrderLine.class, code);
-  }
-
-
-  /**
-   * Return the user having the passed email.
-   */
-  public List<OrderLine> getBySalesCode(final long salesCode) {
-    return entityManager.createQuery(String.format("from OrderLine where sales_code = %s", salesCode)).getResultList();
-  }
-
-
-  /**
-   * Update the passed user in the database.
-   */
-  public void update(final OrderLine orderLine) {
-    entityManager.merge(orderLine);
-    return;
-  }
-
-  // ------------------------
-  // PRIVATE FIELDS
-  // ------------------------
-
-  // An EntityManager will be automatically injected from entityManagerFactory
-  // setup on DatabaseConfig class.
-  @PersistenceContext
-  private EntityManager entityManager;
 }

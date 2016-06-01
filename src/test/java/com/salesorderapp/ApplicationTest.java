@@ -34,7 +34,7 @@ public class ApplicationTest {
 
   @Before
   public void setup(){
-    productDao.executeNativeQuery("TRUNCATE SCHEMA PUBLIC AND COMMIT");
+//    productDao.executeNativeQuery("TRUNCATE SCHEMA PUBLIC AND COMMIT");
     firstProduct = new Product(new Date().getTime(), "Laptops", 23D, 12D);
     secondProduct = new Product(new Date().getTime() + 10L, "Shoes", 23D, 12D);
 
