@@ -1,4 +1,4 @@
-package com.salesorderapp.backend.models;
+package com.salesorderapp.backend.entities;
 
 import java.util.List;
 import java.util.Map;

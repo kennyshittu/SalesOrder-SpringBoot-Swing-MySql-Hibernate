@@ -1,10 +1,8 @@
 package com.salesorderapp.backend.daos;
 
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
-import com.salesorderapp.backend.entities.Customer;
+import com.salesorderapp.backend.models.Customer;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

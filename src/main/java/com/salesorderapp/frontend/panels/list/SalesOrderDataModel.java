@@ -3,7 +3,7 @@ package com.salesorderapp.frontend.panels.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.salesorderapp.backend.entities.SalesOrder;
+import com.salesorderapp.backend.models.SalesOrder;
 import com.salesorderapp.frontend.services.Services;
 
 

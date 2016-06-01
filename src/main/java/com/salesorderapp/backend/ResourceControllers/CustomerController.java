@@ -1,7 +1,7 @@
 package com.salesorderapp.backend.ResourceControllers;
 
 import com.salesorderapp.backend.daos.CustomerDao;
-import com.salesorderapp.backend.entities.Customer;
+import com.salesorderapp.backend.models.Customer;
 import com.salesorderapp.backend.entities.CustomerList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

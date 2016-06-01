@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 
 import com.salesorderapp.backend.daos.ProductDao;
 
-import com.salesorderapp.backend.entities.Product;
+import com.salesorderapp.backend.models.Product;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,7 +16,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 
 /**
  * Created by Shittu on 01/06/2016.

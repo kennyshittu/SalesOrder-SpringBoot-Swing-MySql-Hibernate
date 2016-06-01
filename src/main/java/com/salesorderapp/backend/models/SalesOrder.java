@@ -1,4 +1,4 @@
-package com.salesorderapp.backend.entities;
+package com.salesorderapp.backend.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

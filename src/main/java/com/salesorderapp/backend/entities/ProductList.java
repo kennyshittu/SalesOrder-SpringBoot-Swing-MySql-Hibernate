@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.salesorderapp.backend.models.Product;
 
 /**
  * Created by Shittu on 30/05/2016.

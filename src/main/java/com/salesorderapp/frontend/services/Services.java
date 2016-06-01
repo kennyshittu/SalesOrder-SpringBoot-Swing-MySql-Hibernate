@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.salesorderapp.backend.entities.Customer;
+import com.salesorderapp.backend.models.Customer;
 import com.salesorderapp.backend.entities.CustomerList;
-import com.salesorderapp.backend.entities.Product;
+import com.salesorderapp.backend.models.Product;
 import com.salesorderapp.backend.entities.ProductList;
 import com.salesorderapp.backend.entities.SalesOrderList;
-import com.salesorderapp.backend.models.SalesOrderEntity;
+import com.salesorderapp.backend.entities.SalesOrderEntity;
 import com.salesorderapp.frontend.panels.ComboBoxItem;
 import org.springframework.web.client.RestTemplate;
 

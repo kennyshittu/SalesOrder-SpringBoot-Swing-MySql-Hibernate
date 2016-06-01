@@ -6,10 +6,10 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import com.salesorderapp.backend.entities.Customer;
-import com.salesorderapp.backend.entities.OrderLine;
-import com.salesorderapp.backend.entities.SalesOrder;
-import com.salesorderapp.backend.models.SalesOrderEntity;
+import com.salesorderapp.backend.models.Customer;
+import com.salesorderapp.backend.models.OrderLine;
+import com.salesorderapp.backend.models.SalesOrder;
+import com.salesorderapp.backend.entities.SalesOrderEntity;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

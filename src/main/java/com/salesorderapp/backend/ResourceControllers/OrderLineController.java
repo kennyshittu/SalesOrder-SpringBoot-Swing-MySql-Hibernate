@@ -3,7 +3,7 @@ package com.salesorderapp.backend.ResourceControllers;
 import java.util.List;
 
 import com.salesorderapp.backend.daos.OrderLineDao;
-import com.salesorderapp.backend.entities.OrderLine;
+import com.salesorderapp.backend.models.OrderLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -3,7 +3,7 @@ package com.salesorderapp.frontend.panels.edit;
 import java.awt.*;
 import javax.swing.*;
 
-import com.salesorderapp.backend.entities.Customer;
+import com.salesorderapp.backend.models.Customer;
 import com.salesorderapp.frontend.services.Services;
 
 public class EditCustomer extends EditContentPanel 

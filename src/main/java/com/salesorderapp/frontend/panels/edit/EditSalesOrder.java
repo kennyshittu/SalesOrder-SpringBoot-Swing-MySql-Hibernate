@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import com.salesorderapp.backend.models.SalesOrderEntity;
+import com.salesorderapp.backend.entities.SalesOrderEntity;
 import com.salesorderapp.frontend.panels.ComboBoxItem;
 import com.salesorderapp.frontend.services.Services;
 import com.salesorderapp.frontend.services.Utils;

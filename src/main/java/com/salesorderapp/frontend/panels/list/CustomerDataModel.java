@@ -3,7 +3,7 @@ package com.salesorderapp.frontend.panels.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.salesorderapp.backend.entities.Customer;
+import com.salesorderapp.backend.models.Customer;
 import com.salesorderapp.frontend.services.Services;
 
 public class CustomerDataModel extends ListDataModel
