@@ -16,7 +16,6 @@ import com.salesorderapp.frontend.panels.list.SalesOrderDataModel;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
-@org.springframework.stereotype.Component
 public class Main implements PanelSwitcher {
 	private JFrame frame;
 	private JPanel panel;
@@ -27,7 +26,6 @@ public class Main implements PanelSwitcher {
 			public void run() {
 				try {
 					ConfigurableApplicationContext context = new SpringApplicationBuilder(Application.class)
-							.headless(false)
 							.run(args);
 
 					Main window = context.getBean(Main.class);

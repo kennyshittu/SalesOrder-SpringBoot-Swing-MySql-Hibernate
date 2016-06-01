@@ -3,6 +3,7 @@ package com.salesorderapp.backend.configs;
 import java.util.Properties;
 import javax.sql.DataSource;
 
+import com.salesorderapp.frontend.panels.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -95,6 +96,12 @@ public class DatabaseConfig {
   @Bean
   public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
     return new PersistenceExceptionTranslationPostProcessor();
+  }
+
+  @Bean
+  public Main main(){
+    Main main = new Main();
+    return main;
   }
 
 
