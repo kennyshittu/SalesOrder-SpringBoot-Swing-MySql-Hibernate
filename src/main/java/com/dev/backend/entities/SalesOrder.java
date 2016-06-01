@@ -1,11 +1,9 @@
 package com.dev.backend.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -18,16 +16,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class SalesOrder {
 
   @Id
+  @Column(name = "code")
   private long code;
 
-  @NotNull
-  private long customer_code;
+  @Column(name = "customer")
+  private String customer;
 
-  private long product_code;
 
+  @Column(name = "quantity")
   private Double quantity;
 
-  private Double total_price;
+  @Column(name = "total_price")
+  private Double totalPrice;
 
 
   public SalesOrder() {
@@ -39,16 +39,12 @@ public class SalesOrder {
 
   public SalesOrder(
       final long code,
-      final long customer_code,
-      final long product_code,
-      final Double quantity,
-      final Double total_price
+      final String customer,
+      final Double totalPrice
   ) {
     this.code = code;
-    this.customer_code = customer_code;
-    this.product_code = product_code;
-    this.quantity = quantity;
-    this.total_price = total_price;
+    this.customer = customer;
+    this.totalPrice = totalPrice;
   }
 
   public long getCode() {
@@ -59,35 +55,19 @@ public class SalesOrder {
     this.code = code;
   }
 
-  public long getCustomer_code() {
-    return customer_code;
+  public String getCustomer() {
+    return customer;
   }
 
-  public void setCustomer_code(final long customer_code) {
-    this.customer_code = customer_code;
+  public void setCustomer(final String customer) {
+    this.customer = customer;
   }
 
-  public long getProduct_code() {
-    return product_code;
+  public Double getTotalPrice() {
+    return totalPrice;
   }
 
-  public void setProduct_code(final long product_code) {
-    this.product_code = product_code;
-  }
-
-  public Double getQuantity() {
-    return quantity;
-  }
-
-  public void setQuantity(final Double quantity) {
-    this.quantity = quantity;
-  }
-
-  public Double getTotal_price() {
-    return total_price;
-  }
-
-  public void setTotal_price(final Double total_price) {
-    this.total_price = total_price;
+  public void setTotal(final Double totalPrice) {
+    this.totalPrice = totalPrice;
   }
 }

@@ -59,10 +59,7 @@ public class OrderLineDao {
    * Return the user having the passed email.
    */
   public List<OrderLine> getBySalesCode(final long salesCode) {
-    return (List<OrderLine>) entityManager
-        .createQuery(String.format("from OrderLine where sales_code = :salesCode"))
-        .setParameter("salesCode", salesCode)
-        .getResultList();
+    return entityManager.createQuery(String.format("from OrderLine where sales_code = %s", salesCode)).getResultList();
   }
 
 

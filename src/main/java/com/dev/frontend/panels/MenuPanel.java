@@ -1,11 +1,9 @@
 package com.dev.frontend.panels;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import com.dev.frontend.panels.edit.EditCustomer;
 import com.dev.frontend.panels.edit.EditProduct;

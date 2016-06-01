@@ -1,27 +1,19 @@
 package com.dev.frontend.panels.edit;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
+import java.util.Map;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import com.dev.backend.models.SalesOrderEntity;
 import com.dev.frontend.panels.ComboBoxItem;
 import com.dev.frontend.services.Services;
 import com.dev.frontend.services.Utils;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public class EditSalesOrder extends EditContentPanel
 {
@@ -32,6 +24,9 @@ public class EditSalesOrder extends EditContentPanel
 	private JTextField txtQuantity = new JTextField();
 	private JButton btnAddLine = new JButton("Add");
 	private JComboBox<ComboBoxItem> txtProduct = new JComboBox<ComboBoxItem>();
+
+	private List<Map<String, Object>> addedProducts = Lists.newArrayList();
+
 	private DefaultTableModel defaultTableModel = new DefaultTableModel(new String[] { "Product", "Qty", "Price", "Total" }, 0)
 	{
 
@@ -199,6 +194,12 @@ public class EditSalesOrder extends EditContentPanel
 		try
 		{
 			qty = Integer.parseInt(txtQuantity.getText());
+			Map<String, Object> product = Maps.newHashMap();
+			product.put("id", productCode);
+			product.put("quantity", Double.parseDouble(txtQuantity.getText()));
+			product.put("price", price);
+
+			addedProducts.add(product);
 		}
 		catch (Exception e)
 		{
@@ -217,7 +218,28 @@ public class EditSalesOrder extends EditContentPanel
 		/*
 		 * This method use the object returned by Services.readRecordByCode and should map it to screen widgets 
 		 */
-		return false;
+		if(o != null) {
+			SalesOrderEntity salesOrderEntity = (SalesOrderEntity) o;
+			defaultTableModel.setRowCount(0);
+			for (Map<String, Object> product : salesOrderEntity.getProducts()) {
+				double totalPrice = (Double) product.get("quantity") * (Double) product.get("price");
+				defaultTableModel.addRow(new String[]{
+						String.valueOf(product.get("id")),
+						"" + String.valueOf(product.get("quantity")),
+						"" + String.valueOf(product.get("price")),
+						"" + totalPrice});
+			}
+
+			txtOrderNum.setText(String.valueOf(salesOrderEntity.getOrderNumber()));
+			txtCustomer.setSelectedItem(new ComboBoxItem(
+							String.valueOf(salesOrderEntity.getCustomer().get("id")),
+							String.valueOf(salesOrderEntity.getCustomer().get("name")))
+			);
+			txtTotalPrice.setText(salesOrderEntity.getTotalPrice().toString());
+		} else {
+			return false;
+		}
+		return true;
 	}
 
 	public Object guiToObject() {
@@ -226,7 +248,28 @@ public class EditSalesOrder extends EditContentPanel
 		 * This method collect values from screen widgets and convert them to object of your type
 		 * This object will be used as a parameter of method Services.save
 		 */
-		return null;
+		if (defaultTableModel.getRowCount() < 1){
+			JOptionPane.showMessageDialog(this, "You must add at least one order.");
+			return null;
+		}
+		ComboBoxItem productComboBoxItem = (ComboBoxItem) txtProduct.getSelectedItem();
+		ComboBoxItem customerComboBoxItem = (ComboBoxItem) txtCustomer.getSelectedItem();
+		if (productComboBoxItem == null || customerComboBoxItem == null)
+		{
+			JOptionPane.showMessageDialog(this, "You must select a product and a customer");
+			return null;
+		}
+
+		Map<String, Object> customer  = Maps.newHashMap();
+		customer.put("id", customerComboBoxItem.getKey());
+		customer.put("name", customerComboBoxItem.getValue());
+
+		// create products map list
+		return new SalesOrderEntity(
+				Long.parseLong(txtOrderNum.getText()),
+				customer,
+				addedProducts,
+				Double.parseDouble(txtTotalPrice.getText()));
 	}
 
 	public int getObjectType()

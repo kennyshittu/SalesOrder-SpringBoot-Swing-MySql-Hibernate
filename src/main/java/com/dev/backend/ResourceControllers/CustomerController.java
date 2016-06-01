@@ -1,9 +1,8 @@
 package com.dev.backend.ResourceControllers;
 
-import java.util.List;
-
 import com.dev.backend.daos.CustomerDao;
 import com.dev.backend.entities.Customer;
+import com.dev.backend.entities.CustomerList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +21,7 @@ public class CustomerController {
 
   @RequestMapping(value="/create" , method = RequestMethod.POST)
   @ResponseBody
-  public boolean create(
+  public Customer create(
       @RequestBody final Customer customer
   ) {
     System.out.println("Got here...");
@@ -31,19 +30,19 @@ public class CustomerController {
     }
     catch(final Exception ex) {
       ex.printStackTrace();
-      return false;
+      return null;
     }
-    return true;
+    return mCustomerDao.getById(customer.getCode());
   }
 
   // READ
 
   @RequestMapping(value="/all" , method = RequestMethod.GET)
   @ResponseBody
-  public List<Customer> getAll() {
+  public CustomerList getAll() {
     System.out.println("Got here...");
     try {
-      return mCustomerDao.getAll();
+      return new CustomerList(mCustomerDao.getAll());
     }
     catch(final Exception ex) {
       ex.printStackTrace();
@@ -67,7 +66,7 @@ public class CustomerController {
 
   @RequestMapping(value="/update" , method = RequestMethod.PUT)
   @ResponseBody
-  public boolean update(
+  public Boolean update(
       final Customer customer
   ) {
     System.out.println("Got here...");
@@ -83,9 +82,9 @@ public class CustomerController {
 
   // DELETE
 
-  @RequestMapping(value="/delete", method = RequestMethod.DELETE)
+  @RequestMapping(value="/delete", method = RequestMethod.GET)
   @ResponseBody
-  public boolean delete(@RequestParam(name="code")final long code) {
+  public Boolean delete(@RequestParam(name="code")final long code) {
     try {
       Customer customer = new Customer(code);
       mCustomerDao.delete(customer);

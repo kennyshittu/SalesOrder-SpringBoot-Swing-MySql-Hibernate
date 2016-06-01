@@ -2,7 +2,6 @@ package com.dev.frontend.panels.list;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import com.dev.backend.entities.Product;
 import com.dev.frontend.services.Services;
@@ -39,10 +38,10 @@ public class ProductDataModel extends ListDataModel
 		for (Object o : list) {
 			Product product = (Product)o;
 			String[] rowData = new String []{
-					String.format("%s",product.getCode()),
+					String.valueOf(product.getCode()),
 					product.getDescription(),
-					String.format("%s", product.getPrice()),
-					String.format("%s",product.getQuantity())
+					String.valueOf(product.getPrice()),
+					String.valueOf(product.getQuantity())
 			};
 			sampleData.add(rowData);
 		}

@@ -3,6 +3,7 @@ package com.dev.frontend.panels.list;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dev.backend.entities.Customer;
 import com.dev.frontend.services.Services;
 
 public class CustomerDataModel extends ListDataModel
@@ -28,7 +29,21 @@ public class CustomerDataModel extends ListDataModel
 		 * This method use list returned by Services.listCurrentRecords and should convert it to array of rows
 		 * each row is another array of columns of the row
 		 */
-		String[][] sampleData = new String [][]{{"01","Customer 1","+201011121314","23.4"},{"02","Customer 2","+201112131415","1.4"}};
-		return new ArrayList<>();
+//		String[][] sampleData = new String [][]{{"01","Customer 1","+201011121314","23.4"},{"02","Customer 2","+201112131415","1.4"}};
+		List<String []> sampleData = new ArrayList<>();
+
+		for (Object o : list) {
+			Customer customer = (Customer)o;
+			String[] rowData = new String []{
+					String.valueOf(customer.getCode()),
+					customer.getName(),
+					customer.getPrimaryPhoneLine(),
+					String.valueOf(customer.getCurrentCredit())
+			};
+			sampleData.add(rowData);
+		}
+
+
+		return sampleData;
 	}
 }

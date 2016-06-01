@@ -1,12 +1,9 @@
 package com.dev.frontend.panels.edit;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
+import javax.swing.*;
 
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-
+import com.dev.backend.entities.Customer;
 import com.dev.frontend.services.Services;
 
 public class EditCustomer extends EditContentPanel 
@@ -137,7 +134,15 @@ public class EditCustomer extends EditContentPanel
 		/*
 		 * This method use the object returned by Services.readRecordByCode and should map it to screen widgets 
 		 */
-		return false;
+		Customer customer = (Customer)o;
+		txtCode.setText(String.valueOf(customer.getCode()));
+		txtName.setText(customer.getName());
+		txtPhone1.setText(customer.getPrimaryPhoneLine());
+		txtPhone2.setText(customer.getSecondaryPhoneLine());
+		txtAddress.setText(customer.getAddress());
+		txtCreditLimit.setText(customer.getCreditLimit().toString());
+		txtCurrentCredit.setText(customer.getCurrentCredit().toString());
+		return true;
 	}
 
 	public Object guiToObject() 
@@ -147,7 +152,15 @@ public class EditCustomer extends EditContentPanel
 		 * This method collect values from screen widgets and convert them to object of your type
 		 * This object will be used as a parameter of method Services.save
 		 */
-		return null;
+		return new Customer(
+				Long.parseLong(txtCode.getText()),
+				txtName.getText(),
+				txtAddress.getText(),
+				txtPhone1.getText(),
+				txtPhone2.getText(),
+				Double.parseDouble(txtCreditLimit.getText()),
+				0D
+		);
 	}
 
 	@Override

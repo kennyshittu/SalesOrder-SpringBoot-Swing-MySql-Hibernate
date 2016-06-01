@@ -1,11 +1,7 @@
 package com.dev.frontend.panels.edit;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+import java.awt.*;
+import javax.swing.*;
 
 import com.dev.backend.entities.Product;
 import com.dev.frontend.services.Services;
@@ -87,10 +83,10 @@ public class EditProduct extends EditContentPanel
 		 * This method use the object returned by Services.readRecordByCode and should map it to screen widgets 
 		 */
 		Product product = (Product)o;
-		txtCode.setText(String.format("%s", product.getCode()));
+		txtCode.setText(String.valueOf(product.getCode()));
 		txtDescription.setText(product.getDescription());
-		txtPrice.setText(String.format("%s", product.getPrice()));
-		txtQuantity.setText(String.format("%s", product.getQuantity()));
+		txtPrice.setText(product.getPrice().toString());
+		txtQuantity.setText(product.getQuantity().toString());
 		return true;
 	}
 

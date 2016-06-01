@@ -1,9 +1,18 @@
 package com.dev.backend.ResourceControllers;
 
 import java.util.List;
+import java.util.Map;
 
+import com.dev.backend.daos.CustomerDao;
+import com.dev.backend.daos.OrderLineDao;
+import com.dev.backend.daos.ProductDao;
 import com.dev.backend.daos.SalesOrderDao;
+import com.dev.backend.entities.Customer;
+import com.dev.backend.entities.OrderLine;
+import com.dev.backend.entities.Product;
 import com.dev.backend.entities.SalesOrder;
+import com.dev.backend.entities.SalesOrderList;
+import com.dev.backend.models.SalesOrderEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,27 +31,57 @@ public class SalesOrderController {
 
   @RequestMapping(value="/create" , method = RequestMethod.POST)
   @ResponseBody
-  public String create(
-      @RequestBody final SalesOrder salesOrder
+  public SalesOrderEntity create(
+      @RequestBody final SalesOrderEntity salesOrderEntity
   ) {
-    System.out.println("Got here...");
     try {
-      mSalesOrderDao.create(salesOrder);
+      // do sales order checks before creating
+      boolean creditCheck = validateCreditBalance(salesOrderEntity);
+      boolean productCheck = validateProductQuantity(salesOrderEntity);
+
+      // if valid sales make adjustment to affected balances
+      if(creditCheck && productCheck){
+        System.out.println("Passed check");
+        mSalesOrderDao.create(new SalesOrder(
+                salesOrderEntity.getOrderNumber(),
+                String.format(
+                    "(%s) %s",
+                    salesOrderEntity.getCustomer().get("id"),
+                    salesOrderEntity.getCustomer().get("name")
+                ),
+                salesOrderEntity.getTotalPrice())
+        );
+
+        for(Map<String, Object> productObject : salesOrderEntity.getProducts()){
+
+          mOrderLineDao.create(new OrderLine(
+              salesOrderEntity.getOrderNumber(),
+              Long.parseLong((String) productObject.get("id")),
+              (Double)productObject.get("price"),
+              (Double)productObject.get("quantity")
+          ));
+        }
+
+        updateCustomerCreditBalance(salesOrderEntity);
+        updateProductQuantity(salesOrderEntity);
+      } else {
+        return null;
+      }
     }
     catch(final Exception ex) {
-      return ex.getMessage();
+      ex.printStackTrace();
+      return null;
     }
-    return "User succesfully saved!";
+    return mSalesOrderDao.getById(salesOrderEntity.getOrderNumber());
   }
 
   // READ
 
   @RequestMapping(value="/all" , method = RequestMethod.GET)
   @ResponseBody
-  public List<SalesOrder> getAll() {
-    System.out.println("Got here...");
+  public SalesOrderList getAll() {
     try {
-      return mSalesOrderDao.getAll();
+      return new SalesOrderList(mSalesOrderDao.getAll());
     }
     catch(final Exception ex) {
       ex.printStackTrace();
@@ -52,7 +91,7 @@ public class SalesOrderController {
 
   @RequestMapping(value="/", method = RequestMethod.GET)
   @ResponseBody
-  public SalesOrder getSalesOrder(@RequestParam(name="salescode") final long salesCode) {
+  public SalesOrderEntity getSalesOrder(@RequestParam(name="salescode") final long salesCode) {
     try {
       return mSalesOrderDao.getById(salesCode);
     }
@@ -66,36 +105,78 @@ public class SalesOrderController {
 
   @RequestMapping(value="/update" , method = RequestMethod.PUT)
   @ResponseBody
-  public String update(
+  public Boolean update(
       final SalesOrder salesOrder
   ) {
-    System.out.println("Got here...");
     try {
       mSalesOrderDao.update(salesOrder);
     }
     catch(final Exception ex) {
-      return ex.getMessage();
+      ex.printStackTrace();
+      return false;
     }
-    return "User succesfully saved!";
+    return true;
   }
 
   // DELETE
 
-  @RequestMapping(value="/delete", method = RequestMethod.DELETE)
+  @RequestMapping(value="/delete", method = RequestMethod.GET)
   @ResponseBody
-  public String delete(@RequestParam(name="ordernumber")final long orderNumber) {
+  public Boolean delete(@RequestParam(name="ordernumber")final long orderNumber) {
     try {
+      List<OrderLine> orderLines = mOrderLineDao.getBySalesCode(orderNumber);
+      orderLines.stream().forEach(orderLine -> mOrderLineDao.delete(orderLine));
+
       SalesOrder salesOrder = new SalesOrder(orderNumber);
       mSalesOrderDao.delete(salesOrder);
     }
     catch(Exception ex) {
-      return ex.getMessage();
+      ex.printStackTrace();
+      return false;
     }
-    return "User succesfully deleted!";
+    return true;
   }
 
+  private boolean validateProductQuantity (final SalesOrderEntity salesOrderEntity){
+    for(Map<String, Object> productObject : salesOrderEntity.getProducts()){
+      Double quantityAvailable = mProductDao.getById(Long.parseLong((String)productObject.get("id"))).getQuantity();
+      Double quantityOrdered = (Double)productObject.get("quantity");
+      if(quantityAvailable <= quantityOrdered){
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean validateCreditBalance (final SalesOrderEntity salesOrderEntity) {
+    Customer customer = mCustomerDao.getById(Long.parseLong((String)salesOrderEntity.getCustomer().get("id")));
+    return salesOrderEntity.getTotalPrice() <= customer.getCreditLimit() - customer.getCurrentCredit();
+  }
+
+  private void updateCustomerCreditBalance (final SalesOrderEntity salesOrderEntity) {
+    Customer customer = mCustomerDao.getById(Long.parseLong((String)salesOrderEntity.getCustomer().get("id")));
+    customer.setCurrentCredit(customer.getCurrentCredit() + salesOrderEntity.getTotalPrice());
+    mCustomerDao.update(customer);
+  }
+
+  private void updateProductQuantity (final  SalesOrderEntity salesOrderEntity) {
+    for(Map<String, Object> productObject : salesOrderEntity.getProducts()){
+      Product product = mProductDao.getById(Long.parseLong((String)productObject.get("id")));
+      product.setQuantity(product.getQuantity() - (Double)productObject.get("quantity"));
+      mProductDao.update(product);
+    }
+  }
 
   // Private fields
   @Autowired
   private SalesOrderDao mSalesOrderDao;
+
+  @Autowired
+  private ProductDao mProductDao;
+
+  @Autowired
+  private CustomerDao mCustomerDao;
+
+  @Autowired
+  private OrderLineDao mOrderLineDao;
 }

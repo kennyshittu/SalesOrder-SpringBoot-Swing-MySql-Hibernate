@@ -1,7 +1,5 @@
 package com.dev.backend.ResourceControllers;
 
-import java.util.List;
-
 import com.dev.backend.daos.ProductDao;
 import com.dev.backend.entities.Product;
 import com.dev.backend.entities.ProductList;
@@ -23,7 +21,7 @@ public class ProductController {
 
   @RequestMapping(value="/create" , method = RequestMethod.POST)
   @ResponseBody
-  public boolean create(
+  public Product create(
       @RequestBody final Product product
   ) {
     System.out.println("Got here...");
@@ -32,9 +30,9 @@ public class ProductController {
     }
     catch(final Exception ex) {
       ex.printStackTrace();
-      return false;
+      return null;
     }
-    return true;
+    return mProductDao.getById(product.getCode());
   }
 
   // READ
@@ -68,7 +66,7 @@ public class ProductController {
 
   @RequestMapping(value="/update" , method = RequestMethod.PUT)
   @ResponseBody
-  public boolean update(
+  public Boolean update(
       final Product product
   ) {
     System.out.println("Got here...");
@@ -84,9 +82,9 @@ public class ProductController {
 
   // DELETE
 
-  @RequestMapping(value="/delete", method = RequestMethod.DELETE)
+  @RequestMapping(value="/delete", method = RequestMethod.GET)
   @ResponseBody
-  public boolean delete(@RequestParam(name="code")final long code) {
+  public Boolean delete(@RequestParam(name="code")final long code) {
     try {
       Product product = new Product(code);
       mProductDao.delete(product);

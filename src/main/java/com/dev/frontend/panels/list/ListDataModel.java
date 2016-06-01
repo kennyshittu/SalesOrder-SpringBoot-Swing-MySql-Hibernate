@@ -1,7 +1,6 @@
 package com.dev.frontend.panels.list;
 
 import java.util.List;
-
 import javax.swing.table.DefaultTableModel;
 
 import com.dev.frontend.panels.BusinessPresenter;

@@ -22,7 +22,7 @@ public class OrderLineController {
 
   @RequestMapping(value="/create" , method = RequestMethod.POST)
   @ResponseBody
-  public boolean create(
+  public OrderLine create(
       @RequestBody final OrderLine orderLine
   ) {
     System.out.println("Got here...");
@@ -31,9 +31,9 @@ public class OrderLineController {
     }
     catch(final Exception ex) {
       ex.printStackTrace();
-      return false;
+      return null;
     }
-    return true;
+    return mOrderLineDao.getById(orderLine.getCode());
   }
 
   // READ
@@ -79,7 +79,7 @@ public class OrderLineController {
 
   @RequestMapping(value="/update" , method = RequestMethod.PUT)
   @ResponseBody
-  public boolean update(
+  public Boolean update(
       final OrderLine orderLine
   ) {
     System.out.println("Got here...");
@@ -95,9 +95,9 @@ public class OrderLineController {
 
   // DELETE
 
-  @RequestMapping(value="/delete", method = RequestMethod.DELETE)
+  @RequestMapping(value="/delete", method = RequestMethod.GET)
   @ResponseBody
-  public boolean delete(@RequestParam(name="code")final long code) {
+  public Boolean delete(@RequestParam(name="code")final long code) {
     try {
       OrderLine orderLine = new OrderLine(code);
       mOrderLineDao.delete(orderLine);

@@ -1,12 +1,10 @@
 package com.dev.backend.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
@@ -19,10 +17,13 @@ public class Product {
   @Id
   private long code;
 
+  @Column(name="description")
   private String description;
 
+  @Column(name="price")
   private Double price;
 
+  @Column(name="quantity")
   private Double quantity;
 
   public Product() {

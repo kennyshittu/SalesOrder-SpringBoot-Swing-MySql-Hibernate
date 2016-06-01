@@ -1,12 +1,8 @@
 package com.dev.frontend.panels;
 
-import java.awt.CardLayout;
-import java.awt.Component;
-import java.awt.EventQueue;
+import java.awt.*;
 import java.util.HashMap;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import com.dev.Application;
 import com.dev.frontend.panels.edit.EditContainer;

@@ -1,8 +1,7 @@
 package com.dev.backend.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -25,17 +24,23 @@ public class Customer {
 
   @NotNull
   @Size(min = 2, max = 80)
+  @Column(name = "name")
   private String name;
 
+  @Column(name = "address")
   private String address;
 
-  private String primary_phone_line;
+  @Column(name = "primary_phone_line")
+  private String primaryPhoneLine;
 
-  private String secondary_phone_line;
+  @Column(name = "secondary_phone_line")
+  private String secondaryPhoneLine;
 
-  private Double credit_limit;
+  @Column(name = "credit_limit")
+  private Double creditLimit;
 
-  private Double current_credit;
+  @Column(name = "current_credit")
+  private Double currentCredit;
 
 
   public Customer() { }
@@ -48,18 +53,18 @@ public class Customer {
       final long code,
       final String name,
       final String address,
-      final String primary_phone_line,
-      final String secondary_phone_line,
-      final Double credit_limit,
-      final Double current_credit
+      final String primaryPhoneLine,
+      final String secondaryPhoneLine,
+      final Double creditLimit,
+      final Double currentCredit
   ) {
     this.code = code;
     this.name = name;
     this.address = address;
-    this.primary_phone_line = primary_phone_line;
-    this.secondary_phone_line = secondary_phone_line;
-    this.credit_limit = credit_limit;
-    this.current_credit = current_credit;
+    this.primaryPhoneLine = primaryPhoneLine;
+    this.secondaryPhoneLine = secondaryPhoneLine;
+    this.creditLimit = creditLimit;
+    this.currentCredit = currentCredit;
   }
 
   public long getCode() {
@@ -86,36 +91,36 @@ public class Customer {
     this.address = address;
   }
 
-  public String getPrimary_phone_line() {
-    return primary_phone_line;
+  public String getPrimaryPhoneLine() {
+    return primaryPhoneLine;
   }
 
-  public void setPrimary_phone_line(final String primary_phone_line) {
-    this.primary_phone_line = primary_phone_line;
+  public void setPrimaryPhoneLine(final String primaryPhoneLine) {
+    this.primaryPhoneLine = primaryPhoneLine;
   }
 
-  public String getSecondary_phone_line() {
-    return secondary_phone_line;
+  public String getSecondaryPhoneLine() {
+    return secondaryPhoneLine;
   }
 
-  public void setSecondary_phone_line(final String secondary_phone_line) {
-    this.secondary_phone_line = secondary_phone_line;
+  public void setSecondaryPhoneLine(final String secondaryPhoneLine) {
+    this.secondaryPhoneLine = secondaryPhoneLine;
   }
 
-  public Double getCredit_limit() {
-    return credit_limit;
+  public Double getCreditLimit() {
+    return creditLimit;
   }
 
-  public void setCredit_limit(final Double credit_limit) {
-    this.credit_limit = credit_limit;
+  public void setCreditLimit(final Double creditLimit) {
+    this.creditLimit = creditLimit;
   }
 
-  public Double getCurrent_credit() {
-    return current_credit;
+  public Double getCurrentCredit() {
+    return currentCredit;
   }
 
-  public void setCurrent_credit(final Double current_credit) {
-    this.current_credit = current_credit;
+  public void setCurrentCredit(final Double currentCredit) {
+    this.currentCredit = currentCredit;
   }
 
   @Override
@@ -126,10 +131,10 @@ public class Customer {
     return Objects.equal(code, customer.code) &&
         Objects.equal(name, customer.name) &&
         Objects.equal(address, customer.address) &&
-        Objects.equal(primary_phone_line, customer.primary_phone_line) &&
-        Objects.equal(secondary_phone_line, customer.secondary_phone_line) &&
-        Objects.equal(credit_limit, customer.credit_limit) &&
-        Objects.equal(current_credit, customer.current_credit);
+        Objects.equal(primaryPhoneLine, customer.primaryPhoneLine) &&
+        Objects.equal(secondaryPhoneLine, customer.secondaryPhoneLine) &&
+        Objects.equal(creditLimit, customer.creditLimit) &&
+        Objects.equal(currentCredit, customer.currentCredit);
   }
 
   @Override
@@ -138,10 +143,10 @@ public class Customer {
         code,
         name,
         address,
-        primary_phone_line,
-        secondary_phone_line,
-        credit_limit,
-        current_credit
+        primaryPhoneLine,
+        secondaryPhoneLine,
+        creditLimit,
+        currentCredit
     );
   }
 
@@ -151,10 +156,10 @@ public class Customer {
         .add("code", code)
         .add("name", name)
         .add("address", address)
-        .add("primary_phone_line", primary_phone_line)
-        .add("secondary_phone_line", secondary_phone_line)
-        .add("credit_limit", credit_limit)
-        .add("current_credit", current_credit)
+        .add("primaryPhoneLine", primaryPhoneLine)
+        .add("secondaryPhoneLine", secondaryPhoneLine)
+        .add("creditLimit", creditLimit)
+        .add("currentCredit", currentCredit)
         .toString();
   }
 }

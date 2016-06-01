@@ -1,30 +1,37 @@
 package com.dev.backend.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by Shittu on 30/05/2016.
  */
 @Entity
 @Table(name = "order_lines")
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderLine {
 
   @Id
+  @GeneratedValue
   private long code;
 
   @NotNull
-  private long sales_code;
+  @Column(name = "sales_code")
+  private long salesCode;
 
   @NotNull
-  private long product_code;
+  @Column(name = "product_code")
+  private long productCode;
 
   @NotNull
+  @Column(name = "product_price")
+  private Double productPrice;
+
+  @NotNull
+  @Column(name = "quantity")
   private Double quantity;
 
   public OrderLine() {
@@ -34,10 +41,15 @@ public class OrderLine {
     this.code = code;
   }
 
-  public OrderLine(final long code, final long sales_code, final long product_code, final Double quantity) {
-    this.code = code;
-    this.sales_code = sales_code;
-    this.product_code = product_code;
+  public OrderLine(
+      final long salesCode,
+      final long productCode,
+      final Double productPrice,
+      final Double quantity
+  ) {
+    this.salesCode = salesCode;
+    this.productCode = productCode;
+    this.productPrice = productPrice;
     this.quantity = quantity;
   }
 
@@ -49,20 +61,28 @@ public class OrderLine {
     this.code = code;
   }
 
-  public long getSales_code() {
-    return sales_code;
+  public long getSalesCode() {
+    return salesCode;
   }
 
-  public void setSales_code(final long sales_code) {
-    this.sales_code = sales_code;
+  public void setSalesCode(final long salesCode) {
+    this.salesCode = salesCode;
   }
 
-  public long getProduct_code() {
-    return product_code;
+  public long getProductCode() {
+    return productCode;
   }
 
-  public void setProduct_code(final long product_code) {
-    this.product_code = product_code;
+  public void setProductCode(final long productCode) {
+    this.productCode = productCode;
+  }
+
+  public Double getProductPrice() {
+    return productPrice;
+  }
+
+  public void setProductPrice(final Double productPrice) {
+    this.productPrice = productPrice;
   }
 
   public Double getQuantity() {

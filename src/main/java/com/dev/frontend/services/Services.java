@@ -1,19 +1,15 @@
 package com.dev.frontend.services;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
-
-import javax.xml.ws.Response;
 
 import com.dev.backend.entities.Customer;
 import com.dev.backend.entities.CustomerList;
 import com.dev.backend.entities.Product;
 import com.dev.backend.entities.ProductList;
-import com.dev.backend.entities.SalesOrder;
 import com.dev.backend.entities.SalesOrderList;
+import com.dev.backend.models.SalesOrderEntity;
 import com.dev.frontend.panels.ComboBoxItem;
 import org.springframework.web.client.RestTemplate;
 
@@ -37,7 +33,6 @@ public class Services
 		System.out.println("Current object : " + object);
 		switch (objectType){
 			case  TYPE_PRODUCT:
-				System.out.println("Product : " + String.format("%s/product/create", BASE_URI));
 				return restTemplate.postForObject(
 						String.format("%s/product/create", BASE_URI),
 						object,
@@ -55,7 +50,7 @@ public class Services
 				return restTemplate.postForObject(
 						String.format("%s/salesorder/create", BASE_URI),
 						object,
-						SalesOrder.class
+						SalesOrderEntity.class
 				);
 			default:
 				return null;
@@ -86,7 +81,7 @@ public class Services
 			case TYPE_SALESORDER:
 				return restTemplate.getForObject(
 						String.format("%s/salesorder/?salescode=%s", BASE_URI, code),
-						SalesOrder.class
+						SalesOrderEntity.class
 				);
 			default:
 				return null;
@@ -100,8 +95,28 @@ public class Services
 		 * the code parameter is the code of (Customer - PRoduct ) or order number of Sales Order
 		 * and the type is identifier of the object type and may be TYPE_PRODUCT ,
 		 * TYPE_CUSTOMER or TYPE_SALESORDER
-		 */ 
-		return true;
+		 */
+		final RestTemplate restTemplate = new RestTemplate();
+
+		switch (objectType){
+			case  TYPE_PRODUCT:
+				return restTemplate.getForObject(
+						String.format("%s/product/delete?code=%s", BASE_URI, code),
+						Boolean.class
+				);
+			case TYPE_CUSTOMER:
+				return restTemplate.getForObject(
+						String.format("%s/customer/delete?code=%s", BASE_URI, code),
+						Boolean.class
+				);
+			case TYPE_SALESORDER:
+				return restTemplate.getForObject(
+						String.format("%s/salesorder/delete?ordernumber=%s", BASE_URI, code),
+						Boolean.class
+				);
+			default:
+				return false;
+		}
 	}
 	
 	public static List<Object> listCurrentRecords(int objectType)
@@ -148,13 +163,46 @@ public class Services
 		 * This method is called when a Combo Box need to be initialized and should
 		 * return list of ComboBoxItem which contains code and description/name for all records of specified type
 		 */
-		return new ArrayList<ComboBoxItem>();
+		final RestTemplate restTemplate = new RestTemplate();
+
+		switch (objectType){
+			case  TYPE_PRODUCT:
+				return restTemplate
+						.getForObject(
+								String.format("%s/product/all", BASE_URI),
+								ProductList.class)
+						.getProducts()
+						.stream()
+						.map(product -> new ComboBoxItem(
+								String.valueOf(product.getCode()),
+								product.getDescription()))
+						.collect(Collectors.toList());
+			case TYPE_CUSTOMER:
+				return restTemplate
+						.getForObject(
+								String.format("%s/customer/all", BASE_URI),
+								CustomerList.class)
+						.getCustomers()
+						.stream()
+						.map(customer -> new ComboBoxItem(
+								String.valueOf(customer.getCode()),
+								customer.getName()))
+						.collect(Collectors.toList());
+			default:
+				return new ArrayList<ComboBoxItem>();
+		}
+
 	}
 	public static double getProductPrice(String productCode) {
 		//TODO by the candidate
 		/*
 		 * This method is used to get unit price of product with the code passed as a parameter
 		 */
-		return 1;
+		final RestTemplate restTemplate = new RestTemplate();
+		Product product = restTemplate.getForObject(
+				String.format("%s/product/?code=%s", BASE_URI, productCode),
+				Product.class
+		);
+		return product.getPrice();
 	}
 }

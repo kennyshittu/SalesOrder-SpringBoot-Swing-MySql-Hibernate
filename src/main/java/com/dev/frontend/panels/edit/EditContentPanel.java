@@ -1,6 +1,6 @@
 package com.dev.frontend.panels.edit;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import com.dev.frontend.panels.BusinessPresenter;
 

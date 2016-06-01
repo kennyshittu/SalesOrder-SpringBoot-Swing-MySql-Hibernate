@@ -1,25 +1,17 @@
 package com.dev.frontend.panels.list;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JToolBar;
-import javax.swing.ListSelectionModel;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.dev.frontend.panels.BusinessPresenter;
-import com.dev.frontend.panels.PanelSwitcher;
 import com.dev.frontend.panels.HasBusinessPresenter;
 import com.dev.frontend.panels.MenuPanel;
+import com.dev.frontend.panels.PanelSwitcher;
 import com.dev.frontend.panels.edit.EditContainer;
 import com.dev.frontend.panels.edit.EditCustomer;
 import com.dev.frontend.panels.edit.EditProduct;
@@ -66,7 +58,7 @@ public class ListContentPanel extends JPanel implements HasBusinessPresenter {
 				new ListSelectionListener() {
 
 					public void valueChanged(ListSelectionEvent e) {
-						if (!e.getValueIsAdjusting())
+						if (!e.getValueIsAdjusting() && table.getRowCount() > 0 && table.getSelectedRow() > -1)
 							goToRecord(table.getValueAt(table.getSelectedRow(),
 									0).toString());
 					}

@@ -1,20 +1,16 @@
 package com.dev.frontend.panels.edit;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
+import java.util.Objects;
+import javax.swing.*;
 
 import com.dev.frontend.panels.BusinessPresenter;
-import com.dev.frontend.panels.PanelSwitcher;
 import com.dev.frontend.panels.HasBusinessPresenter;
 import com.dev.frontend.panels.MenuPanel;
+import com.dev.frontend.panels.PanelSwitcher;
 import com.dev.frontend.services.Services;
 
 public class EditContainer extends JPanel implements ActionListener,HasBusinessPresenter {
@@ -66,11 +62,21 @@ public class EditContainer extends JPanel implements ActionListener,HasBusinessP
 		if(actionCommand.equals(SAVE_ACTION))
 		{
 			Object currentObject = editPanel.guiToObject();
-			System.out.println("Current object gui: " + currentObject);
 			try
 			{
-			currentObject = Services.save(currentObject, objectType);
-			editPanel.bindToGUI(currentObject);
+				if(currentObject != null) {
+					currentObject = Services.save(currentObject, objectType);
+					boolean retValue = editPanel.bindToGUI(currentObject);
+					if (!retValue) {
+						if (Objects.equals(objectType, 3)) {
+							JOptionPane.showMessageDialog(this, "Invalid Order Number, Inventory Level or Customer Credit Limit");
+						} else {
+							JOptionPane.showMessageDialog(this, "Invalid Data Provided.");
+						}
+					} else {
+						JOptionPane.showMessageDialog(this, "Record Saved");
+					}
+				}
 			}
 			catch(Exception ee)
 			{
