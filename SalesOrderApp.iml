@@ -4,8 +4,9 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset" name="Spring Application Context" removed="false">
-          <file>file://$MODULE_DIR$/src/main/java/com/dev/Application.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/dev/backend/configs/DatabaseConfig.java</file>
+          <dependency>fileset</dependency>
+          <file>file://$MODULE_DIR$/src/main/java/com/salesorderapp/Application.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/salesorderapp/backend/configs/DatabaseConfig.java</file>
         </fileset>
       </configuration>
     </facet>

@@ -35,14 +35,41 @@ public class SalesOrderController {
       @RequestBody final SalesOrderEntity salesOrderEntity
   ) {
     try {
-      // do sales order checks before creating
-      boolean creditCheck = validateCreditBalance(salesOrderEntity);
-      boolean productCheck = validateProductQuantity(salesOrderEntity);
+      SalesOrderEntity salesOrder = mSalesOrderDao.getById(salesOrderEntity.getOrderNumber());
+      if(salesOrder == null) {
+        // do sales order checks before creating
+        boolean creditCheck = validateCreditBalance(salesOrderEntity);
+        boolean productCheck = validateProductQuantity(salesOrderEntity);
 
-      // if valid sales make adjustment to affected balances
-      if(creditCheck && productCheck){
-        System.out.println("Passed check");
-        mSalesOrderDao.create(new SalesOrder(
+        // if valid sales make adjustment to affected balances
+        if (creditCheck && productCheck) {
+          mSalesOrderDao.create(new SalesOrder(
+                  salesOrderEntity.getOrderNumber(),
+                  String.format(
+                      "(%s) %s",
+                      salesOrderEntity.getCustomer().get("id"),
+                      salesOrderEntity.getCustomer().get("name")
+                  ),
+                  salesOrderEntity.getTotalPrice())
+          );
+
+          for (Map<String, Object> productObject : salesOrderEntity.getProducts()) {
+
+            mOrderLineDao.create(new OrderLine(
+                salesOrderEntity.getOrderNumber(),
+                Long.parseLong((String) productObject.get("id")),
+                (Double) productObject.get("price"),
+                (Double) productObject.get("quantity")
+            ));
+          }
+
+          updateCustomerCreditBalance(salesOrderEntity);
+          updateProductQuantity(salesOrderEntity);
+        } else {
+          return null;
+        }
+      } else {
+        mSalesOrderDao.update(new SalesOrder(
                 salesOrderEntity.getOrderNumber(),
                 String.format(
                     "(%s) %s",
@@ -52,21 +79,19 @@ public class SalesOrderController {
                 salesOrderEntity.getTotalPrice())
         );
 
-        for(Map<String, Object> productObject : salesOrderEntity.getProducts()){
+        for (Map<String, Object> productObject : salesOrderEntity.getProducts()) {
 
           mOrderLineDao.create(new OrderLine(
               salesOrderEntity.getOrderNumber(),
               Long.parseLong((String) productObject.get("id")),
-              (Double)productObject.get("price"),
-              (Double)productObject.get("quantity")
+              (Double) productObject.get("price"),
+              (Double) productObject.get("quantity")
           ));
         }
-
-        updateCustomerCreditBalance(salesOrderEntity);
+        setCustomerCreditBalance(salesOrderEntity, salesOrderEntity.getTotalPrice() - salesOrder.getTotalPrice());
         updateProductQuantity(salesOrderEntity);
-      } else {
-        return null;
       }
+
     }
     catch(final Exception ex) {
       ex.printStackTrace();
@@ -165,6 +190,12 @@ public class SalesOrderController {
       product.setQuantity(product.getQuantity() - (Double)productObject.get("quantity"));
       mProductDao.update(product);
     }
+  }
+
+  private void setCustomerCreditBalance (final SalesOrderEntity salesOrderEntity, final Double additionalCredit) {
+    Customer customer = mCustomerDao.getById(Long.parseLong((String)salesOrderEntity.getCustomer().get("id")));
+    customer.setCurrentCredit(customer.getCurrentCredit() + additionalCredit);
+    mCustomerDao.update(customer);
   }
 
   // Private fields

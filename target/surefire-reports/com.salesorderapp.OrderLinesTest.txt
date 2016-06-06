@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.salesorderapp.OrderLinesTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.272 sec - in com.salesorderapp.OrderLinesTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.627 sec - in com.salesorderapp.OrderLinesTest

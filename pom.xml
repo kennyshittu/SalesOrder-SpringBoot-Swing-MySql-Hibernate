@@ -14,6 +14,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<guava.version>18.0</guava.version>
 		<jetty.version>9.2.13.v20150730</jetty.version>
+		<start-class>com.salesorderapp.Application</start-class>
 	</properties>
 
 	<parent>

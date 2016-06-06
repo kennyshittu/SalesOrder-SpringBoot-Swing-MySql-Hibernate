@@ -26,7 +26,12 @@ public class CustomerController {
   ) {
     System.out.println("Got here...");
     try {
-      mCustomerDao.create(customer);
+      Customer existingCustomer = getCustomer(customer.getCode());
+      if(existingCustomer != null){
+        mCustomerDao.update(customer);
+      }else{
+        mCustomerDao.create(customer);
+      }
     }
     catch(final Exception ex) {
       ex.printStackTrace();

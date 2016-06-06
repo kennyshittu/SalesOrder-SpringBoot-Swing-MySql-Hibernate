@@ -25,9 +25,13 @@ public class OrderLineController {
   public OrderLine create(
       @RequestBody final OrderLine orderLine
   ) {
-    System.out.println("Got here...");
     try {
-      mOrderLineDao.create(orderLine);
+      OrderLine existingOrderLine = getOrder(orderLine.getCode());
+      if(existingOrderLine != null){
+        mOrderLineDao.update(orderLine);
+      }else{
+        mOrderLineDao.create(orderLine);
+      }
     }
     catch(final Exception ex) {
       ex.printStackTrace();
@@ -41,7 +45,6 @@ public class OrderLineController {
   @RequestMapping(value="/all" , method = RequestMethod.GET)
   @ResponseBody
   public List<OrderLine> getAll() {
-    System.out.println("Got here...");
     try {
       return mOrderLineDao.getAll();
     }
@@ -82,7 +85,6 @@ public class OrderLineController {
   public Boolean update(
       final OrderLine orderLine
   ) {
-    System.out.println("Got here...");
     try {
       mOrderLineDao.update(orderLine);
     }

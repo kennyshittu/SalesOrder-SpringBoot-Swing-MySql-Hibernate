@@ -26,7 +26,12 @@ public class ProductController {
   ) {
     System.out.println("Got here...");
     try {
-      mProductDao.create(product);
+      Product existingProduct = getProduct(product.getCode());
+      if(existingProduct != null){
+        mProductDao.update(product);
+      }else{
+        mProductDao.create(product);
+      }
     }
     catch(final Exception ex) {
       ex.printStackTrace();

@@ -22,10 +22,6 @@ public class SalesOrder {
   @Column(name = "customer")
   private String customer;
 
-
-  @Column(name = "quantity")
-  private Double quantity;
-
   @Column(name = "total_price")
   private Double totalPrice;
 

@@ -1,3 +1,8 @@
+CREATE DATABASE inventory;
+COMMIT;
+
+USE inventory;
+
 CREATE TABLE `products` (
   `code` BIGINT unsigned NOT NULL,
   `description` TEXT,
@@ -5,7 +10,7 @@ CREATE TABLE `products` (
   `quantity` DOUBLE NOT NULL DEFAULT 0.0,
   PRIMARY KEY (`code`)
 );
-commit;
+COMMIT;
 
 CREATE TABLE `customers` (
   `code` BIGINT unsigned NOT NULL,
@@ -17,15 +22,17 @@ CREATE TABLE `customers` (
   `current_credit` DOUBLE NOT NULL DEFAULT 0.0,
   PRIMARY KEY (`code`)
 );
-commit;
+COMMIT;
 
+DROP TABLE `sales_orders`;
+COMMIT;
 CREATE TABLE `sales_orders` (
   `code` BIGINT unsigned NOT NULL,
   `customer` VARCHAR(20) NOT NULL,
   `total_price` DOUBLE DEFAULT 0.0,
   PRIMARY KEY (`code`)
 );
-commit;
+COMMIT;
 
 CREATE TABLE `order_lines` (
   `code` BIGINT unsigned NOT NULL AUTO_INCREMENT,
@@ -35,4 +42,4 @@ CREATE TABLE `order_lines` (
   `quantity` DOUBLE DEFAULT 0.0,
   PRIMARY KEY (`code`)
 );
-commit;
+COMMIT;

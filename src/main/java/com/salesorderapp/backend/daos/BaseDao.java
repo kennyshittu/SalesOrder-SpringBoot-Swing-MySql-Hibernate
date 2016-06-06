@@ -17,6 +17,7 @@ public abstract class BaseDao<T> {
    * Save the Object in the database.
    */
   public void create(final T object) {
+
     entityManager.persist(object);
     return;
   }

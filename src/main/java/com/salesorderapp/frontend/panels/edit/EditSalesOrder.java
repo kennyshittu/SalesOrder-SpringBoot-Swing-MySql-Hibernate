@@ -3,6 +3,7 @@ package com.salesorderapp.frontend.panels.edit;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.*;
@@ -221,6 +222,7 @@ public class EditSalesOrder extends EditContentPanel
 		if(o != null) {
 			SalesOrderEntity salesOrderEntity = (SalesOrderEntity) o;
 			defaultTableModel.setRowCount(0);
+			addedProducts = new ArrayList<>();
 			for (Map<String, Object> product : salesOrderEntity.getProducts()) {
 				double totalPrice = (Double) product.get("quantity") * (Double) product.get("price");
 				defaultTableModel.addRow(new String[]{
@@ -290,6 +292,7 @@ public class EditSalesOrder extends EditContentPanel
 		txtQuantity.setText("");
 		txtTotalPrice.setText("");
 		defaultTableModel.setRowCount(0);
+		addedProducts = new ArrayList<>();
 	}
 
 	public void onInit()
