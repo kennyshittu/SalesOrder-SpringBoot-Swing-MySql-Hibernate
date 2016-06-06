@@ -1,1 +1,26 @@
 # Created by .ignore support plugin (hsz.mobi)
+# Runtime files.
+db/
+*.log
+SERVERVERSION
+server.pid
+
+# Testing files.
+derby.log
+
+# Maven files.
+target/
+dependency-reduced-pom.xml
+
+# IntelliJ files.
+out/
+.idea/
+*.iml
+
+# Floobits files.
+.floo
+.flooignore
+
+# Mac files.
+.DS_Store
+
